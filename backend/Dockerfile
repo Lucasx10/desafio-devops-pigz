@@ -1,4 +1,5 @@
-FROM php:8.0-fpm
+# Primeira imagem: PHP e Symfony
+FROM php:8.0-fpm AS php
 
 # Instalação das dependências do sistema
 RUN apt update \
@@ -17,6 +18,4 @@ RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
 # Criar um novo projeto Symfony em um diretório temporário
 WORKDIR /var/www/app
-
 RUN symfony new /var/www/app --no-interaction --no-git
-
