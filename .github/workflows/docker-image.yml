@@ -29,3 +29,9 @@ jobs:
         run: |
           cd backend/
           docker-compose down
+
+      - name: Login to Docker Hub and push image
+        run: |
+          echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+          cd backend/
+          docker-compose push
