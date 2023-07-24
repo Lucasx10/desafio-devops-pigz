@@ -36,6 +36,4 @@ jobs:
           DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           cd backend/
-          DOCKERHUB_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/pigz:1.0
-          docker tag app:latest $DOCKERHUB_IMAGE
-          docker push $DOCKERHUB_IMAGE
+          docker-compose push 
