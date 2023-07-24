@@ -26,4 +26,5 @@ jobs:
         run: sleep 30
 
       - name: Stop and remove Docker Compose containers
+        run: cd backend/
         run: docker-compose down
