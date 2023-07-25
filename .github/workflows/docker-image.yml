@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main 
+      
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
-    uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Build NGINX
       run: cd backend/ && docker build . --file Dockerfile.nginx --tag pr4dox-nginx-app:$(date +%s) && cd .. 
