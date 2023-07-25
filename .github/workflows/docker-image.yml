@@ -3,26 +3,34 @@ on:
   push:
     branches:
       - main 
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Build NGINX
-      run: cd backend/ && docker build . --file Dockerfile.nginx --tag pr4dox/nginx-app:$(date +%s) && cd .. 
-
-    - name: Build PHP-FPH
-      run: cd backend/ && docker build . --file Dockerfile.php --tag pr4dox/php-app:$(date +%s) && cd ..
-
-    - name: Login to Docker Hub and push images
-      env:
-        DOCKER_CLI_AIO_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-      run: |
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install python3-pip
+          sudo pip3 install docker-compose
+      - name: Build and Run Docker Compose
+        run: |
           cd backend/
-          docker push pr4dox/nginx-app:$(date +%s) 
-          docker push pr4dox/php-app:$(date +%s) 
+          docker-compose build
+          docker-compose up -d
+      - name: Wait for application to start
+        run: sleep 30
+
+      - name: Stop and remove Docker Compose containers
+        run: |
+          cd backend/
+          docker-compose down
+      - name: Login to Docker Hub and push image
+        env:
+          DOCKER_CLI_AIO_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          cd backend/
+          docker-compose push 
