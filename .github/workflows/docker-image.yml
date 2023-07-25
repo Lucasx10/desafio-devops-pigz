@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Construir e Implantar
 on:
   push:
     branches:
@@ -7,30 +7,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Verificar o código
         uses: actions/checkout@v2
 
-      - name: Set up Docker Compose
+      - name: Configurar o Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get -y install python3-pip
           sudo pip3 install docker-compose
-      - name: Build and Run Docker Compose
+
+      - name: Construir e Executar o Docker Compose
         run: |
           cd backend/
           docker-compose build
           docker-compose up -d
-      - name: Wait for application to start
+
+      - name: Aguardar a inicialização da aplicação
         run: sleep 30
 
-      - name: Stop and remove Docker Compose containers
+      - name: Parar e remover os contêineres do Docker Compose
         run: |
           cd backend/
           docker-compose down
-      - name: Login to Docker Hub and push image
+
+      - name: Login no Docker Hub e enviar imagem
         env:
           DOCKER_CLI_AIO_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           cd backend/
-          docker-compose push 
+          docker-compose push
+
+      - name: Enviar docker-compose.yml para o repositório do Docker Hub
+        env:
+          DOCKERHUB_REPO: pr4dox/pigz
+        run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          docker tag app:latest $DOCKERHUB_REPO:latest
+          docker push $DOCKERHUB_REPO:latest
+          docker logout
