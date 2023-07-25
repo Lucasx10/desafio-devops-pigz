@@ -30,10 +30,16 @@ jobs:
           cd backend/
           docker-compose down
 
+      - name: Tag Docker image with current date
+        run: |
+          cd backend/
+          docker tag backend_php pr4dox/backend_php:$(date +%s)
+          docker tag backend_nginx pr4dox/backend_nginx:$(date +%s)
+
       - name: Login to Docker Hub and push image
         env:
           DOCKER_CLI_AIO_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           cd backend/
-          docker-compose push 
+          docker-compose push pr4dox/pigz:$(date +%s)

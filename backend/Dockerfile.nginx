@@ -1,0 +1,11 @@
+# Segunda imagem: Nginx
+FROM nginx:stable-alpine AS nginx
+
+# Copiar a configuração personalizada do Nginx
+COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Diretório de trabalho padrão para o Nginx
+WORKDIR /var/www/app
+
+# Porta que o Nginx expõe
+EXPOSE 80
