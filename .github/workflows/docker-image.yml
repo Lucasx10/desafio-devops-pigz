@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main 
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,10 +13,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build NGINX
-      run: cd backend/ && docker build . --file Dockerfile.nginx --tag pr4dox-nginx-app:$(date +%s) && cd .. 
+      run: cd backend/ && docker build . --file Dockerfile.nginx --tag pr4dox/nginx-app:$(date +%s) && cd .. 
 
     - name: Build PHP-FPH
-      run: cd backend/ && docker build . --file Dockerfile.php --tag pr4dox-php-app:$(date +%s) && cd ..
+      run: cd backend/ && docker build . --file Dockerfile.php --tag pr4dox/php-app:$(date +%s) && cd ..
 
     - name: Login to Docker Hub and push images
       env:
@@ -24,5 +24,5 @@ jobs:
         DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
       run: |
           cd backend/
-          docker push pr4dox-nginx-app:$(date +%s) 
-          docker push pr4dox-php-app:$(date +%s) 
+          docker push pr4dox/nginx-app:$(date +%s) 
+          docker push pr4dox/php-app:$(date +%s) 
