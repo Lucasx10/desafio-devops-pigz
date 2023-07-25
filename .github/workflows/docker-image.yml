@@ -44,6 +44,7 @@ jobs:
           DOCKERHUB_REPO: pr4dox/pigz
         run: |
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker tag app:latest $DOCKERHUB_REPO:latest
+          docker tag backend_nginx:latest $DOCKERHUB_REPO:latest
+          docker tag backend_php:latest $DOCKERHUB_REPO:latest
           docker push $DOCKERHUB_REPO:latest
           docker logout
