@@ -42,4 +42,5 @@ jobs:
           DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           cd backend/
-          docker-compose push pr4dox/pigz:$(date +%s)
+          docker push pr4dox/backend_php:$(date +%s)
+          docker push pr4dox/backend_nginx:$(date +%s)
