@@ -21,12 +21,6 @@ jobs:
           cd backend/
           docker-compose build
           docker-compose up -d
-      
-      - name: Tag Docker image with current date
-        run: |
-          cd backend/
-          docker tag backend_php pr4dox/pigz:$(date +%s)
-          docker tag backend_nginx pr4dox/pigz:$(date +%s)
 
       - name: Wait for application to start
         run: sleep 30
@@ -36,10 +30,19 @@ jobs:
           cd backend/
           docker-compose down
 
-      - name: Login to Docker Hub and push image
+
+      - name: Tag Docker image with current date
+        run: |
+          cd backend/
+          IMAGE_TAG=$(date +%m%d)
+          docker tag backend_php pr4dox/pigz:${IMAGE_TAG}
+          docker tag backend_nginx pr4dox/pigz:${IMAGE_TAG}
+
+      - name: Login to Docker Hub and push images
         env:
           DOCKER_CLI_AIO_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_CLI_AIO_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           cd backend/
-          docker push pr4dox/pigz:$(date +%s)
+          IMAGE_TAG=$(date +%m%d)
+          docker push pr4dox/pigz:${IMAGE_TAG}
