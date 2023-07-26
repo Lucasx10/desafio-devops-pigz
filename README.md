@@ -6,6 +6,7 @@ Consegui fazer rodar a aplicação completa, na minha resolução tem dois Docke
 Foi modificado tambem o arquivo default.conf para executar um projeto symfony.
 Ambos estão sendo chamado em um arquivo docker-compose que especifica a criação das imagens.
 Foi feita tambem a configuração do Github Actions para o build do docker e enviar para o docker hub em um repositorio a cada push na branch main.
+Link da image no docker Hub: https://hub.docker.com/r/pr4dox/pigz
 
 # Como executar
 - Git clone na maquina local
